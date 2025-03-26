@@ -1,7 +1,25 @@
 from bs4 import BeautifulSoup
 import requests
+from thefuzz import fuzz,process
+import pandas as pd
 
-stockInput = input("Enter Stock name you'd like to monitor :")
+
+
+df = pd.read_csv(r"D:\Mishal\Projects - College\External Study\Stock Market Watcher\stock-watcher\stock_names.csv")
+
+def findBestMatch(query, choices, threshold=80):
+    match = process.extractOne(query, choices, score_cutoff=threshold)
+    index = choices.index(match[0])
+    return match[0],index if match else None
+
+stock_names = df["Issuer Name"].tolist()
+code = df["Security Code"].tolist()
+
+stockInput = input("Enter Stock Name : ")
+best_match,index = findBestMatch(stockInput,stock_names)
+companyCode = code[index]
+print(companyCode)
+print(best_match)
 
 sector_keywords = {
     "Software & IT Services": ["Tech", "digital economy", "tech news", "tech innovation", "tech growth", "technology trends", "tech disruption", "digital transformation", "tech giants", "tech startups", "venture capital", "cloud adoption", "AI development", "big data", "cybersecurity threats", "robotics advances", "internet speed", "automation impact", "data privacy", "tech regulation", "tech mergers", "industry partnerships", "supply chain", "hardware development", "tech policies"],
@@ -12,8 +30,7 @@ sector_keywords = {
      "Oil & Gas": ["Oil price", "natural gas", "crude oil", "energy supply", "oil exploration", "gas reserves", "drilling technology", "oil refinery", "pipeline construction", "global demand", "fuel prices", "hydraulic fracturing", "energy transition", "offshore drilling", "oil reserves", "gas production", "supply chain", "oil consumption", "refined products", "energy policy", "OPEC decisions", "oil exports", "energy security", "fossil fuels", "oil field", "gas transportation"]    
 }
 
-
-page_to_Scrape = requests.get("https://www.moneycontrol.com/india/stockpricequote/refineries/indianoilcorporation/IOC")
+page_to_Scrape = requests.get("https://www.screener.in/company",)
 soup = BeautifulSoup(page_to_Scrape.text,"html.parser")
 
 companyInfo = soup.find(id="stockName")
@@ -40,3 +57,4 @@ else:
 if companySector in sector_keywords:
     keywords = sector_keywords[companySector]
 else:print("no")
+

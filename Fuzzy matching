@@ -1,0 +1,18 @@
+from thefuzz import fuzz,process
+import pandas as pd
+
+
+df = pd.read_csv(r"D:\Mishal\Projects - College\External Study\Stock Market Watcher\stock-watcher\stock_names.csv")
+
+stock_names = df["Issuer Name"].tolist()
+print(stock_names)
+
+
+def findBestMatch(query, choices, threshold=80):
+    match = process.extractOne(query, choices, score_cutoff=threshold)
+    return match[0] if match else None
+
+
+userInput = input("Enter Stock Name : ")
+best_match = findBestMatch(userInput,stock_names)
+print(best_match)
