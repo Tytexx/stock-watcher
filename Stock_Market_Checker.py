@@ -14,10 +14,16 @@ def findBestMatch(query, choices, threshold=80):
 
 stock_names = df["Issuer Name"].tolist()
 code = df["Security Code"].tolist()
+sector = df["ISubgroup Name"].tolist()
+industry = df["Industry New Name"].tolist()
+
+
 
 stockInput = input("Enter Stock Name : ")
 best_match,index = findBestMatch(stockInput,stock_names)
 companyCode = code[index]
+
+
 print(companyCode)
 print(best_match)
 
@@ -30,31 +36,34 @@ sector_keywords = {
      "Oil & Gas": ["Oil price", "natural gas", "crude oil", "energy supply", "oil exploration", "gas reserves", "drilling technology", "oil refinery", "pipeline construction", "global demand", "fuel prices", "hydraulic fracturing", "energy transition", "offshore drilling", "oil reserves", "gas production", "supply chain", "oil consumption", "refined products", "energy policy", "OPEC decisions", "oil exports", "energy security", "fossil fuels", "oil field", "gas transportation"]    
 }
 
-page_to_Scrape = requests.get("https://www.screener.in/company",)
+page_to_Scrape = requests.get(f"https://www.screener.in/company/{companyCode}",)
 soup = BeautifulSoup(page_to_Scrape.text,"html.parser")
 
-companyInfo = soup.find(id="stockName")
-companyInfoList = companyInfo.text.split("\n")
+companyInfo = soup.find(class_="margin-0 show-from-tablet-landscape")
+companyInfoList = companyInfo.text.split(" ")
+print(companyInfo.text)
+print()
 
-companyName = companyInfoList[1]
+# companyName = companyInfoList[1]
 
-companySecAndInd =companyInfoList[2]
-companySecAndIndList = companySecAndInd.split("|")
+# companySecAndInd =companyInfoList[2]
+# companySecAndIndList = companySecAndInd.split("|")
 
-companySector = companySecAndIndList[0].replace("Sector :", "").strip()
-companyIndustry = companySecAndIndList[1].replace("Industry :", "").strip()
-
+priceParent = soup.find(class_="flex flex-align-center")
+currentPrice = priceParent.find('span')
 
 
 
 if companyInfo:
-    print("Company Name : " + companyName)
-    print("Sector : " + companySector)
-    print("Industry : " + companyIndustry)
+    print("Company Name : " + best_match)
+    print("Sector : " + sector[index])
+    print("Industry : " + industry[index])
+    print("\n")
+    print("Current Price : " + currentPrice.text)
 else:
     print("Company not found")
 
-if companySector in sector_keywords:
-    keywords = sector_keywords[companySector]
-else:print("no")
+# if sector[index] in sector_keywords:
+#     keywords = sector_keywords[companySector]
+# else:print("no")
 
