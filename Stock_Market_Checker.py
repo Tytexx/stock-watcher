@@ -3,7 +3,7 @@ import requests
 from thefuzz import fuzz,process
 import pandas as pd
 
-df = pd.read_csv(r"D:\Mishal\Projects - College\External Study\Stock Market Watcher\stock-watcher\stock_names.csv")
+df = pd.read_csv(r"YourFilePath\stock_names.csv")
 
 def findBestMatch(query, choices, threshold=80):
     match = process.extractOne(query, choices, score_cutoff=threshold)
