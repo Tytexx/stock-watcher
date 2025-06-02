@@ -29,3 +29,22 @@ Scrapes Google News to find recent news articles related to the company's sector
 
 Built-in dictionary mapping of sectors to keywords commonly found in related news.
 
+# ⚙️ Setup Instructions
+
+Follow the steps below to get **Stock Market Watcher** running on your system:
+
+---
+
+## 1. 📁 Clone the Repository
+
+First, clone the project from GitHub to your local machine:
+
+
+## 2. 📦 Install Dependencies
+Make sure you have Python 3.8 or higher installed. Then, install the required Python packages:
+
+pandas
+thefuzz[speedup]
+requests
+beautifulsoup4
+
