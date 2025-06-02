@@ -43,8 +43,6 @@ First, clone the project from GitHub to your local machine:
 ### 2. 📦 Install Dependencies
 Make sure you have Python 3.8 or higher installed. Then, install the required Python packages:
 
-pandas
-thefuzz[speedup]
-requests
-beautifulsoup4
+```pip install pandas "thefuzz[speedup]" requests beautifulsoup4```
+
 
